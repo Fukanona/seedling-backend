@@ -17,6 +17,15 @@ namespace SeedlingOnlineJudge
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAllOriginsPolicy", // I introduced a string constant just as a label "AllowAllOriginsPolicy"
+                builder =>
+                {
+                    builder.AllowAnyOrigin();
+                });
+            });
+
             services.AddControllers();
 
             services.AddSingleton<ProblemsDatabase>();
@@ -31,6 +40,8 @@ namespace SeedlingOnlineJudge
             }
 
             app.UseRouting();
+            app.UseHttpsRedirection();
+            app.UseCors("AllowAllOriginsPolicy");
 
             app.UseEndpoints(endpoints => 
             {
