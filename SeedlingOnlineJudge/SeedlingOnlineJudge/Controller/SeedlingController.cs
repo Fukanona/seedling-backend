@@ -40,5 +40,25 @@ namespace SeedlingOnlineJudge.Controller
 
             return StatusCode(StatusCodes.Status201Created, response);
         }
+
+        [HttpGet]
+        [Route("problem")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public IActionResult GetProblemsIds()
+        {
+            return Ok(_problemsDatabase.GetAllProblemsIds());
+        }
+
+        [HttpGet]
+        [Route("simula")]
+        public IActionResult Simula()
+        {
+            var problem1 = _problemsDatabase.GetProblemById("1");
+            var problem2 = _problemsDatabase.GetProblemById("2");
+
+            _problemsDatabase.Save<ProblemDto>(problem1);
+
+            return Ok(problem1);
+        }
     }
 }
