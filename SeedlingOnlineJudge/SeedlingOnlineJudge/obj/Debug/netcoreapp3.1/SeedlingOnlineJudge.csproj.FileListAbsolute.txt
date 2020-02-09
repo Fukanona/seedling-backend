@@ -100,3 +100,9 @@ C:\Seedling-Project\seedling-backend\SeedlingOnlineJudge\SeedlingOnlineJudge\bin
 C:\Seedling-Project\seedling-backend\SeedlingOnlineJudge\SeedlingOnlineJudge\obj\Debug\netcoreapp3.1\SeedlingOnlineJudge.MvcApplicationPartsAssemblyInfo.cache
 C:\Seedling-Project\seedling-backend\SeedlingOnlineJudge\SeedlingOnlineJudge\obj\Debug\netcoreapp3.1\SeedlingOnlineJudge.dll
 C:\Seedling-Project\seedling-backend\SeedlingOnlineJudge\SeedlingOnlineJudge\obj\Debug\netcoreapp3.1\SeedlingOnlineJudge.pdb
+C:\Seedling-Project\seedling-backend\SeedlingOnlineJudge\SeedlingOnlineJudge\bin\Debug\netcoreapp3.1\tables\problemdto\1.json
+C:\Seedling-Project\seedling-backend\SeedlingOnlineJudge\SeedlingOnlineJudge\bin\Debug\netcoreapp3.1\tables\problemdto\2.json
+C:\Seedling-Project\seedling-backend\SeedlingOnlineJudge\SeedlingOnlineJudge\bin\Debug\netcoreapp3.1\tables\problemdto\3.json
+C:\Seedling-Project\seedling-backend\SeedlingOnlineJudge\SeedlingOnlineJudge\bin\Debug\netcoreapp3.1\tables\problemdto\4.json
+C:\Seedling-Project\seedling-backend\SeedlingOnlineJudge\SeedlingOnlineJudge\bin\Debug\netcoreapp3.1\tables\problemdto\5.json
+C:\Seedling-Project\seedling-backend\SeedlingOnlineJudge\SeedlingOnlineJudge\bin\Debug\netcoreapp3.1\tables\problemdto\6.json

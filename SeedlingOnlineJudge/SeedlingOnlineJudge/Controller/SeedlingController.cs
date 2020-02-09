@@ -49,16 +49,21 @@ namespace SeedlingOnlineJudge.Controller
             return Ok(_problemsDatabase.GetAllProblemsIds());
         }
 
-        [HttpGet]
-        [Route("simula")]
-        public IActionResult Simula()
-        {
-            var problem1 = _problemsDatabase.GetProblemById("1");
-            var problem2 = _problemsDatabase.GetProblemById("2");
+        //[HttpGet]
+        //[Route("simula")]
+        //public IActionResult Simula()
+        //{
+        //    var problem1 = _problemsDatabase.GetProblemById("1");
+        //    var problem2 = _problemsDatabase.GetProblemById("2");
+        //    var problem3 = _problemsDatabase.GetProblemById("3");
+        //    var problem4 = _problemsDatabase.GetProblemById("4");
 
-            _problemsDatabase.Save<ProblemDto>(problem1);
+        //    _problemsDatabase.Save<ProblemDto>(problem1);
+        //    _problemsDatabase.Save<ProblemDto>(problem2);
+        //    _problemsDatabase.Save<ProblemDto>(problem3);
+        //    _problemsDatabase.Save<ProblemDto>(problem4);
 
-            return Ok(problem1);
-        }
+        //    return Ok(new List<ProblemDto> { problem1, problem2, problem3, problem4 });
+        //}
     }
 }

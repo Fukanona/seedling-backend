@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SeedlingOnlineJudge.Model
 {
-    public class ProblemDto : ITable
+    public class ProblemDto : Table<ProblemDto>
     {
         [JsonPropertyName("id")]
         public string Id { get; set; }
@@ -20,10 +20,8 @@ namespace SeedlingOnlineJudge.Model
         [JsonPropertyName("level")]
         public string Level { get; set; }
 
-        public string Path
-        {
-            get => nameof(ProblemDto).ToLower();
-        }
+        public override string GetTableKey() => $"{Id}";
+        
     }
 
     public enum ProblemLevel {

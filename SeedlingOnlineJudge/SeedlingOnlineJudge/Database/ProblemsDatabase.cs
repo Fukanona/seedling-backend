@@ -8,53 +8,21 @@ namespace SeedlingOnlineJudge.Database
 {
     public class ProblemsDatabase : IDatabase
     {
-        private List<ProblemDto> _problems = new List<ProblemDto>
-        {
-            new ProblemDto
-            {
-                Id = "1",
-                Name = "SOJ Problem 1",
-                Description = "Easy problem",
-                Level = ProblemLevel.EASY.ToString()
-            },
-            new ProblemDto
-            {
-                Id = "2",
-                Name = "SOJ Problem 2",
-                Description = "Medium problem",
-                Level = ProblemLevel.MEDIUM.ToString()
-            },
-            new ProblemDto
-            {
-                Id = "3",
-                Name = "SOJ Problem 3",
-                Description = "Hard problem",
-                Level = ProblemLevel.HARD.ToString()
-            },
-            new ProblemDto
-            {
-                Id = "4",
-                Description = "Insane problem",
-                Name = "SOJ Problem 4",
-                Level = ProblemLevel.INSANE.ToString()
-            }
-        };
-
         public ProblemsDatabase() { }
 
         public ProblemDto GetProblemById(string problemId)
         {
-            return _problems.FirstOrDefault(item => item.Id.Equals(problemId));
+            return Read<ProblemDto>(problemId);
         }
 
         public List<string> GetAllProblemsIds()
         {
-            return _problems.Select(item => item.Id).ToList();
+            return ReadAll<ProblemDto>().Select(item => item.Id).ToList();
         }
 
         private void SetNewIdToProblem(ProblemDto newProblem)
         {
-            var lastId = _problems.Last().Id;
+            var lastId = GetAllProblemsIds().Last();
             int newID = Convert.ToInt32(lastId) + 1;
 
             newProblem.Id = newID.ToString();
@@ -64,7 +32,7 @@ namespace SeedlingOnlineJudge.Database
         {
             SetNewIdToProblem(newProblem);
 
-            _problems.Add(newProblem);
+            Save(newProblem);
 
             return newProblem;
         }
