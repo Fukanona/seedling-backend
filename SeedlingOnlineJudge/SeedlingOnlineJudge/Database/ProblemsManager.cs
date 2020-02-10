@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace SeedlingOnlineJudge.Database
 {
-    public class ProblemsDatabase : IDatabase
+    public class ProblemsManager : IDatabase
     {
-        public ProblemsDatabase() { }
+        public ProblemsManager() { }
 
         public ProblemDto GetProblemById(string problemId)
         {
@@ -18,6 +18,11 @@ namespace SeedlingOnlineJudge.Database
         public List<string> GetAllProblemsIds()
         {
             return ReadAll<ProblemDto>().Select(item => item.Id).ToList();
+        }
+
+        public List<ProblemDto> GetAllProblems()
+        {
+            return ReadAll<ProblemDto>();
         }
 
         private void SetNewIdToProblem(ProblemDto newProblem)

@@ -10,26 +10,26 @@ namespace SeedlingOnlineJudge.Database
 {
     public class IDatabase
     {
-        public void Save<T>(T data) where T : Table<T>
+        public void Save<T>(T data) where T : PData<T>
         {
-            var file = $"{Table<T>.Folder}/{data.GetTableKey()}.json";
+            var file = $"{PData<T>.Folder}/{data.GetPDataKey()}.json";
 
             CreateFolderIfNecessary(file);
 
             File.WriteAllText(file, JsonSerializer.Serialize(data));
         }
 
-        public void Save<T>(List<T> datas) where T : Table<T>
+        public void Save<T>(List<T> datas) where T : PData<T>
         {
             foreach (var data in datas)
                 Save<T>(data);
         }
 
-        public T Read<T>(string key, bool prefix = true) where T : Table<T>
+        public T Read<T>(string key, bool prefix = true) where T : PData<T>
         {
             string file = key;
             if(prefix)
-                file = $"{Table<T>.Folder}/{key}.json";
+                file = $"{PData<T>.Folder}/{key}.json";
             T data;
             try
             {
@@ -42,9 +42,9 @@ namespace SeedlingOnlineJudge.Database
             return data;
         }
 
-        public List<T> ReadAll<T>(string basePath = "") where T : Table<T>
+        public List<T> ReadAll<T>(string basePath = "") where T : PData<T>
         {
-            basePath = $"{Table<T>.Folder}/{basePath}"; 
+            basePath = $"{PData<T>.Folder}/{basePath}"; 
             List<T> datas = new List<T>();
             var allFiles = Directory.GetFiles(basePath);
             foreach(var file in allFiles)

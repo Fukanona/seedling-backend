@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SeedlingOnlineJudge.Model
 {
-    public class ProblemDto : Table<ProblemDto>
+    public class ProblemDto : PData<ProblemDto>
     {
         [JsonPropertyName("id")]
         public string Id { get; set; }
@@ -23,7 +23,7 @@ namespace SeedlingOnlineJudge.Model
         [JsonPropertyName("level")]
         public string Level { get; set; }
 
-        public override string GetTableKey() => $"{Id}";
+        public override string GetPDataKey() => $"{Id}";
         
     }
 

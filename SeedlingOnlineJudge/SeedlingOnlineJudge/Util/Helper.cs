@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -29,6 +30,23 @@ namespace SeedlingOnlineJudge.Util
                 return x.CompareTo(y);
 
             }
+        }
+
+        public static async Task<string> SaveAFileToDiskAsync(IFormFile file, string fileName, string path)
+        {
+            if (file.Length > 0)
+            {
+                CreateFolderIfNecessary(path);
+                var filePath = Path.Combine(path, fileName);
+                using (var fileStream = new FileStream(filePath, FileMode.Create))
+                {
+                    await file.CopyToAsync(fileStream);
+                }
+
+                return filePath;
+            }
+
+            return null;
         }
     }
 }

@@ -28,7 +28,8 @@ namespace SeedlingOnlineJudge
 
             services.AddControllers();
 
-            services.AddSingleton<ProblemsDatabase>();
+            services.AddSingleton<ProblemsManager>();
+            services.AddSingleton<IDatabase>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
