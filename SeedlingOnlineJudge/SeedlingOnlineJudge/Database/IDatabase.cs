@@ -1,4 +1,5 @@
 ﻿using SeedlingOnlineJudge.Model;
+using SeedlingOnlineJudge.Util;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -67,8 +68,7 @@ namespace SeedlingOnlineJudge.Database
             if (splittedFile.Count() <= 0) return;
             var folder = string.Join('/', splittedFile.Take(splittedFile.Count() - 1));
 
-            if (!Directory.Exists(folder))
-                Directory.CreateDirectory(folder);
+            Helper.CreateFolderIfNecessary(folder);
         }
     }
 }

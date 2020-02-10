@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SeedlingOnlineJudge.Database;
 using SeedlingOnlineJudge.Model;
+using SeedlingOnlineJudge.Util;
 
 namespace SeedlingOnlineJudge.Controller
 {
@@ -37,7 +38,6 @@ namespace SeedlingOnlineJudge.Controller
         public IActionResult AddProblem(ProblemDto newProblem)
         {
             var response = _problemsDatabase.AddProblem(newProblem);
-
             return StatusCode(StatusCodes.Status201Created, response);
         }
 
@@ -46,24 +46,9 @@ namespace SeedlingOnlineJudge.Controller
         [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult GetProblemsIds()
         {
-            return Ok(_problemsDatabase.GetAllProblemsIds());
+            var allProblemsId = _problemsDatabase.GetAllProblemsIds();
+            allProblemsId.Sort(new Helper.StrToIntAscComparator());
+            return StatusCode(StatusCodes.Status200OK, allProblemsId);
         }
-
-        //[HttpGet]
-        //[Route("simula")]
-        //public IActionResult Simula()
-        //{
-        //    var problem1 = _problemsDatabase.GetProblemById("1");
-        //    var problem2 = _problemsDatabase.GetProblemById("2");
-        //    var problem3 = _problemsDatabase.GetProblemById("3");
-        //    var problem4 = _problemsDatabase.GetProblemById("4");
-
-        //    _problemsDatabase.Save<ProblemDto>(problem1);
-        //    _problemsDatabase.Save<ProblemDto>(problem2);
-        //    _problemsDatabase.Save<ProblemDto>(problem3);
-        //    _problemsDatabase.Save<ProblemDto>(problem4);
-
-        //    return Ok(new List<ProblemDto> { problem1, problem2, problem3, problem4 });
-        //}
     }
 }
