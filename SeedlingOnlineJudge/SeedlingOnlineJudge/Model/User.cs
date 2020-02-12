@@ -23,6 +23,9 @@ namespace SeedlingOnlineJudge.Model
         [JsonPropertyName("username")]
         public string Username { get; set; }
 
+        [JsonPropertyName("password")]
+        public string Password { get; set; }
+
         [JsonPropertyName("company")]
         public string Company { get; set; }
 
