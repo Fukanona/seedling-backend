@@ -5,8 +5,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SeedlingOnlineJudge.Database;
+using SeedlingOnlineJudge.Filters;
 using SeedlingOnlineJudge.Model;
 using SeedlingOnlineJudge.Util;
+using Vtex.Commerce.Centauro.Web;
 
 namespace SeedlingOnlineJudge.Controller
 {
@@ -15,12 +17,12 @@ namespace SeedlingOnlineJudge.Controller
     public class SeedlingController : ControllerBase
     {
         private readonly ProblemsManager _problemsManager;
-        private readonly IDatabase _database;
+        private readonly UserManager _userManager;
 
-        public SeedlingController(ProblemsManager problemsManager, IDatabase database)
+        public SeedlingController(ProblemsManager problemsManager, UserManager userManager)
         {
             _problemsManager = problemsManager;
-            _database = database;
+            _userManager = userManager;
         }
 
         [HttpGet]
@@ -37,11 +39,16 @@ namespace SeedlingOnlineJudge.Controller
 
         [HttpPost]
         [Route("problem")]
+        [ServiceFilter(typeof(UserFilter), IsReusable = true)]
         [ProducesResponseType(StatusCodes.Status201Created)]
-        public IActionResult AddProblem([FromBody] ProblemDto newProblem)
+        public IActionResult AddProblem(ProblemDescription newProblem)
         {
             if (newProblem == null)
                 return StatusCode(StatusCodes.Status400BadRequest, "You need to upload a problem!");
+
+            var user = this.GetUserFromContext();
+
+            newProblem.Author = user;
 
             var response = _problemsManager.AddProblem(newProblem);
 
@@ -61,15 +68,16 @@ namespace SeedlingOnlineJudge.Controller
             if (outLocation == null)
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error trying to save OUT file");
 
-            var problemLocation = new IOLocationDto
-            {
-                Id = lastProblem.Id,
-                In = inLocation,
-                Out = outLocation
-            };
+            return Ok();
+        }
 
-            _database.Save<IOLocationDto>(problemLocation);
-
+        [HttpPost]
+        [Route("solution")]
+        [ServiceFilter(typeof(UserFilter), IsReusable = true)]
+        public async Task<IActionResult> UploadSolutionAsync(IFormFile solution, string problemId)
+        {
+            User user = this.GetUserFromContext();
+            await Helper.SaveAFileToDiskAsync(solution, $"{problemId}.cpp", $"{Folders.SolutionFileLocation}/{user.Username}").ConfigureAwait(false);
             return Ok();
         }
 
@@ -81,6 +89,17 @@ namespace SeedlingOnlineJudge.Controller
             var allProblemsId = _problemsManager.GetAllProblemsIds();
             allProblemsId.Sort(new Helper.StrToIntAscComparator());
             return StatusCode(StatusCodes.Status200OK, allProblemsId);
+        }
+
+        [HttpPost]
+        [Route("user")]
+        public IActionResult RegisterNewUser(User newUser)
+        {
+            newUser.RegisterTime = Helper.GetDateTimeNowBrazil();
+
+            _userManager.SaveUser(newUser);
+
+            return Ok(newUser);
         }
     }
 }

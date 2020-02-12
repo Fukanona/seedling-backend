@@ -16,7 +16,7 @@ namespace SeedlingOnlineJudge.Database
 
             CreateFolderIfNecessary(file);
 
-            File.WriteAllText(file, JsonSerializer.Serialize(data));
+            File.WriteAllText(file, JsonSerializer.Serialize(data), System.Text.Encoding.UTF8);
         }
 
         public void Save<T>(List<T> datas) where T : PData<T>
@@ -46,7 +46,14 @@ namespace SeedlingOnlineJudge.Database
         {
             basePath = $"{PData<T>.Folder}/{basePath}"; 
             List<T> datas = new List<T>();
-            var allFiles = Directory.GetFiles(basePath);
+            string[] allFiles;
+            try
+            {
+                allFiles = Directory.GetFiles(basePath);
+            } catch(Exception ex)
+            {
+                return null;
+            }
             foreach(var file in allFiles)
             {
                 T data;

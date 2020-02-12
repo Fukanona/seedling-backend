@@ -10,30 +10,32 @@ namespace SeedlingOnlineJudge.Database
     {
         public ProblemsManager() { }
 
-        public ProblemDto GetProblemById(string problemId)
+        public ProblemDescription GetProblemById(string problemId)
         {
-            return Read<ProblemDto>(problemId);
+            return Read<ProblemDescription>(problemId);
         }
 
         public List<string> GetAllProblemsIds()
         {
-            return ReadAll<ProblemDto>().Select(item => item.Id).ToList();
+            return ReadAll<ProblemDescription>()?.Select(item => item.Id).ToList();
         }
 
-        public List<ProblemDto> GetAllProblems()
+        public List<ProblemDescription> GetAllProblems()
         {
-            return ReadAll<ProblemDto>();
+            return ReadAll<ProblemDescription>();
         }
 
-        private void SetNewIdToProblem(ProblemDto newProblem)
+        private void SetNewIdToProblem(ProblemDescription newProblem)
         {
-            var lastId = GetAllProblemsIds().Last();
+            var lastId = GetAllProblemsIds()?.LastOrDefault();
+            if (lastId == null)
+                lastId = "0";
             int newID = Convert.ToInt32(lastId) + 1;
 
             newProblem.Id = newID.ToString();
         }
 
-        public ProblemDto AddProblem(ProblemDto newProblem)
+        public ProblemDescription AddProblem(ProblemDescription newProblem)
         {
             SetNewIdToProblem(newProblem);
 

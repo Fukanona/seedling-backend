@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SeedlingOnlineJudge.Model
 {
-    public class ProblemDto : PData<ProblemDto>
+    public class ProblemDescription : PData<ProblemDescription>
     {
         [JsonPropertyName("id")]
         public string Id { get; set; }
@@ -17,8 +17,14 @@ namespace SeedlingOnlineJudge.Model
         [JsonPropertyName("description")]
         public string Description { get; set; }
 
-        [JsonPropertyName("category")]
-        public string Category { get; set; }
+        [JsonPropertyName("author")]
+        public User Author { get; set; }
+
+        [JsonPropertyName("competition")]
+        public string Competition { get; set; }
+
+        [JsonPropertyName("categories")]
+        public List<string> Categories { get; set; }
 
         [JsonPropertyName("level")]
         public string Level { get; set; }
@@ -42,6 +48,8 @@ namespace SeedlingOnlineJudge.Model
         MATH,
         GEOMETRY,
         STRUCTURE,
-        BEGINNER
+        BEGINNER,
+        GRAPH,
+        PARADIGM
     }
 }
