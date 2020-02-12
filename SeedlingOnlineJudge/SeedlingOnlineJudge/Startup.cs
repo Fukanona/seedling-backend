@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SeedlingOnlineJudge.Database;
+using SeedlingOnlineJudge.Filters;
 
 namespace SeedlingOnlineJudge
 {
@@ -28,7 +29,11 @@ namespace SeedlingOnlineJudge
 
             services.AddControllers();
 
-            services.AddSingleton<ProblemsDatabase>();
+            services.AddSingleton<ProblemsManager>();
+            services.AddSingleton<UserManager>();
+            services.AddSingleton<IDatabase>();
+
+            services.AddScoped<UserFilter>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

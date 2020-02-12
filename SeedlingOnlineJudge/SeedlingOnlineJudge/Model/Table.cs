@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace SeedlingOnlineJudge.Model
 {
-    public abstract class Table<T> where T : class
+    public abstract class PData<T> where T : class
     {
-        internal static string Folder => $"tables/{typeof(T).Name.ToLower()}";
-        public abstract string GetTableKey();
+        internal static string Folder => $"datas/{typeof(T).Name.ToLower()}";
+        public abstract string GetPDataKey();
     }
 }
