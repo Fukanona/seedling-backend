@@ -12,12 +12,6 @@ namespace SeedlingOnlineJudge.Util
     {
         private static readonly bool IsWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
 
-        public static void CreateFolderIfNecessary(string folder)
-        {
-            if (!Directory.Exists(folder))
-                Directory.CreateDirectory(folder);
-        }
-
         public class StrToIntAscComparator : IComparer<string>
         {
             public int Compare(string sx, string sy)
@@ -41,21 +35,10 @@ namespace SeedlingOnlineJudge.Util
                 TimeZoneInfo.FindSystemTimeZoneById(IsWindows ? "E. South America Standard Time" : "America/Sao_Paulo"));
         }
 
-        public static async Task<string> SaveAFileToDiskAsync(IFormFile file, string fileName, string path)
+        public static void CreateFolderIfNecessary(string folder)
         {
-            if(file.Length > 0)
-            {
-                CreateFolderIfNecessary(path);
-                var filePath = Path.Combine(path, fileName);                
-                using (var fileStream = new FileStream(filePath, FileMode.Create))
-                {
-                    await file.CopyToAsync(fileStream);
-                }
-
-                return filePath;
-            }
-
-            return null;
+            if (!Directory.Exists(folder))
+                Directory.CreateDirectory(folder);
         }
     }
 }

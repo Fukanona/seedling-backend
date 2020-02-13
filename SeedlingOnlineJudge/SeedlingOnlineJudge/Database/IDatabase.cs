@@ -1,4 +1,5 @@
-﻿using SeedlingOnlineJudge.Model;
+﻿using SeedlingOnlineJudge.Infrastructure.File;
+using SeedlingOnlineJudge.Model;
 using SeedlingOnlineJudge.Util;
 using System;
 using System.Collections.Generic;
@@ -10,11 +11,14 @@ namespace SeedlingOnlineJudge.Database
 {
     public class IDatabase
     {
+        public IDatabase()
+        {
+        }
         public void Save<T>(T data) where T : PData<T>
         {
             var file = $"{PData<T>.Folder}/{data.GetPDataKey()}.json";
 
-            CreateFolderIfNecessary(file);
+            Helper.CreateFolderIfNecessary(file);
 
             File.WriteAllText(file, JsonSerializer.Serialize(data), System.Text.Encoding.UTF8);
         }
@@ -67,15 +71,6 @@ namespace SeedlingOnlineJudge.Database
                 if (data != null) datas.Add(data);
             }
             return datas;
-        }
-
-        private void CreateFolderIfNecessary(string file)
-        {
-            var splittedFile = file.Split('/');
-            if (splittedFile.Count() <= 0) return;
-            var folder = string.Join('/', splittedFile.Take(splittedFile.Count() - 1));
-
-            Helper.CreateFolderIfNecessary(folder);
         }
     }
 }

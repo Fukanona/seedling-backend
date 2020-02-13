@@ -7,7 +7,7 @@ namespace SeedlingOnlineJudge.Model
 {
     public abstract class PData<T> where T : class
     {
-        internal static string Folder => $"datas/{typeof(T).Name.ToLower()}";
+        internal static string Folder => $"{typeof(T).Name.ToLower()}";
         public abstract string GetPDataKey();
     }
 }

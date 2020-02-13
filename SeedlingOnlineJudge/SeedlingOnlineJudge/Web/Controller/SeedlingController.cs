@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SeedlingOnlineJudge.Database;
 using SeedlingOnlineJudge.Filters;
+using SeedlingOnlineJudge.Infrastructure.File;
 using SeedlingOnlineJudge.Model;
 using SeedlingOnlineJudge.Util;
 using Vtex.Commerce.Centauro.Web;
@@ -18,11 +19,13 @@ namespace SeedlingOnlineJudge.Controller
     {
         private readonly ProblemsManager _problemsManager;
         private readonly UserManager _userManager;
+        private readonly FileManager _fileManager;
 
-        public SeedlingController(ProblemsManager problemsManager, UserManager userManager)
+        public SeedlingController(ProblemsManager problemsManager, UserManager userManager, FileManager fileManager)
         {
             _problemsManager = problemsManager;
             _userManager = userManager;
+            _fileManager = fileManager;
         }
 
         [HttpGet]
@@ -57,14 +60,17 @@ namespace SeedlingOnlineJudge.Controller
 
         [HttpPost]
         [Route("problemio")]
+        [ServiceFilter(typeof(UserFilter), IsReusable = true)]
         public async Task<IActionResult> AddProblemInAndOutAsync(IFormFile inFile, IFormFile outFile)
         {
+            User user = this.GetUserFromContext();
+
             var lastProblem = _problemsManager.GetAllProblems().Last();
 
-            var inLocation = await Helper.SaveAFileToDiskAsync(inFile, $"{lastProblem.Id}.in", Folders.InFileLocation).ConfigureAwait(false);
+            var inLocation = await _fileManager.SaveAsync(inFile, $"{lastProblem.Id}.in", $"{FoldersPath.IOLocation}/{user.Username}").ConfigureAwait(false);
             if (inLocation == null)
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error trying to save IN file");
-            var outLocation = await Helper.SaveAFileToDiskAsync(outFile, $"{lastProblem.Id}.out", Folders.OutFileLocation).ConfigureAwait(false);
+            var outLocation = await _fileManager.SaveAsync(outFile, $"{lastProblem.Id}.out", $"{FoldersPath.IOLocation}/{user.Username}").ConfigureAwait(false);
             if (outLocation == null)
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error trying to save OUT file");
 
@@ -77,7 +83,7 @@ namespace SeedlingOnlineJudge.Controller
         public async Task<IActionResult> UploadSolutionAsync(IFormFile solution, string problemId)
         {
             User user = this.GetUserFromContext();
-            await Helper.SaveAFileToDiskAsync(solution, $"{problemId}.cpp", $"{Folders.SolutionFileLocation}/{user.Username}").ConfigureAwait(false);
+            await _fileManager.SaveAsync(solution, $"{problemId}.cpp", $"{FoldersPath.SolutionLocation}/{user.Username}").ConfigureAwait(false);
             return Ok();
         }
 

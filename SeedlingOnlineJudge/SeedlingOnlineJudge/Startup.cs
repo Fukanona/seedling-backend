@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SeedlingOnlineJudge.Database;
 using SeedlingOnlineJudge.Filters;
+using SeedlingOnlineJudge.Infrastructure.File;
 
 namespace SeedlingOnlineJudge
 {
@@ -29,6 +30,7 @@ namespace SeedlingOnlineJudge
 
             services.AddControllers();
 
+            services.AddSingleton<FileManager>();
             services.AddSingleton<ProblemsManager>();
             services.AddSingleton<UserManager>();
             services.AddSingleton<IDatabase>();
