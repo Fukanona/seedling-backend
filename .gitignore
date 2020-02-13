@@ -1,2 +1,32 @@
-*/.vs
-.vs
+*.swp
+*.*~
+project.lock.json
+.DS_Store
+*.pyc
+
+# Visual Studio Code
+.vscode
+
+# User-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build results
+SeedlingOnlineJudge/SeedlingOnlineJudge/[Dd]ebug/
+SeedlingOnlineJudge/SeedlingOnlineJudge/[Dd]ebugPublic/
+SeedlingOnlineJudge/SeedlingOnlineJudge/[Rr]elease/
+SeedlingOnlineJudge/SeedlingOnlineJudge/[Rr]eleases/
+SeedlingOnlineJudge/SeedlingOnlineJudge/x64/
+SeedlingOnlineJudge/SeedlingOnlineJudge/x86/
+SeedlingOnlineJudge/SeedlingOnlineJudge/build/
+SeedlingOnlineJudge/SeedlingOnlineJudge/bld/
+SeedlingOnlineJudge/SeedlingOnlineJudge/[Bb]in/
+SeedlingOnlineJudge/SeedlingOnlineJudge/[Oo]bj/
+SeedlingOnlineJudge/SeedlingOnlineJudge/msbuild.log
+SeedlingOnlineJudge/SeedlingOnlineJudge/msbuild.err
+SeedlingOnlineJudge/SeedlingOnlineJudge/msbuild.wrn
+
+# Visual Studio 2015
+SeedlingOnlineJudge/.vs/
