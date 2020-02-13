@@ -11,20 +11,18 @@ using SeedlingOnlineJudge.Model;
 using SeedlingOnlineJudge.Util;
 using Vtex.Commerce.Centauro.Web;
 
-namespace SeedlingOnlineJudge.Controller
+namespace SeedlingOnlineJudge.Web.Controller
 {
     [ApiController]
     [Route("api/seedling")]
-    public class SeedlingController : ControllerBase
+    public class ProblemController : ControllerBase
     {
         private readonly ProblemsManager _problemsManager;
-        private readonly UserManager _userManager;
         private readonly FileManager _fileManager;
 
-        public SeedlingController(ProblemsManager problemsManager, UserManager userManager, FileManager fileManager)
+        public ProblemController(ProblemsManager problemsManager, FileManager fileManager)
         {
             _problemsManager = problemsManager;
-            _userManager = userManager;
             _fileManager = fileManager;
         }
 
@@ -77,16 +75,6 @@ namespace SeedlingOnlineJudge.Controller
             return Ok();
         }
 
-        [HttpPost]
-        [Route("solution")]
-        [ServiceFilter(typeof(UserFilter), IsReusable = true)]
-        public async Task<IActionResult> UploadSolutionAsync(IFormFile solution, string problemId)
-        {
-            User user = this.GetUserFromContext();
-            await _fileManager.SaveAsync(solution, $"{problemId}.cpp", $"{FoldersPath.SolutionLocation}/{user.Username}").ConfigureAwait(false);
-            return Ok();
-        }
-
         [HttpGet]
         [Route("problem")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -95,17 +83,6 @@ namespace SeedlingOnlineJudge.Controller
             var allProblemsId = _problemsManager.GetAllProblemsIds();
             allProblemsId.Sort(new Helper.StrToIntAscComparator());
             return StatusCode(StatusCodes.Status200OK, allProblemsId);
-        }
-
-        [HttpPost]
-        [Route("user")]
-        public IActionResult RegisterNewUser(User newUser)
-        {
-            newUser.RegisterTime = Helper.GetDateTimeNowBrazil();
-
-            _userManager.SaveUser(newUser);
-
-            return Ok(newUser);
         }
     }
 }
