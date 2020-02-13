@@ -17,6 +17,13 @@ namespace SeedlingOnlineJudge.Database
 
         public void SaveUser(User user)
         {
+            if (user == null)
+                throw new Exception("user cannot be null");
+            if(string.IsNullOrWhiteSpace(user.Username))
+                throw new Exception("username cannot be null");
+            if(string.IsNullOrWhiteSpace(user.Password))
+                throw new Exception("password cannot be null");
+            
             Save<User>(user);
         }
     }

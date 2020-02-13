@@ -16,7 +16,7 @@ namespace SeedlingOnlineJudge.Database
         }
         public void Save<T>(T data) where T : PData<T>
         {
-            var file = $"{PData<T>.Folder}/{data.GetPDataKey()}.json";
+            var file = $"{FoldersPath.Base}/{PData<T>.Folder}/{data.GetPDataKey()}.json";
 
             Helper.CreateFolderIfNecessary(file);
 
@@ -33,7 +33,7 @@ namespace SeedlingOnlineJudge.Database
         {
             string file = key;
             if(prefix)
-                file = $"{PData<T>.Folder}/{key}.json";
+                file = $"{FoldersPath.Base}/{PData<T>.Folder}/{key}.json";
             T data;
             try
             {
