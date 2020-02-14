@@ -16,9 +16,11 @@ namespace SeedlingOnlineJudge.Database
         }
         public void Save<T>(T data) where T : PData<T>
         {
-            var file = $"{FoldersPath.Base}/{PData<T>.Folder}/{data.GetPDataKey()}.json";
+            var path = $"{FoldersPath.Base}/{PData<T>.Folder}";
 
-            Helper.CreateFolderIfNecessary(file);
+            Helper.CreateFolderIfNecessary(path);
+
+            var file = path + $"/{data.GetPDataKey()}.json";
 
             File.WriteAllText(file, JsonSerializer.Serialize(data), System.Text.Encoding.UTF8);
         }

@@ -19,6 +19,7 @@ namespace SeedlingOnlineJudge.Web.Controller
         {
             _userManager = userManager;
         }
+
         [HttpPost]
         [Route("user")]
         public IActionResult RegisterNewUser(User newUser)
@@ -28,6 +29,25 @@ namespace SeedlingOnlineJudge.Web.Controller
             _userManager.SaveUser(newUser);
 
             return Ok(newUser);
+        }
+
+        [HttpGet]
+        [Route("user/{username}")]
+        public IActionResult GetUser(string username)
+        {
+            var user = _userManager.GetUser(username);
+            if (user == null) return NotFound();
+            
+            return Ok(user);
+        }
+
+        [HttpPut]
+        [Route("user/{username}")]
+        public IActionResult UpdateUser(string username, User updatedUser)
+        {
+            var res = _userManager.UpdateUser(username, updatedUser);
+
+            return Ok(res);
         }
     }
 }
