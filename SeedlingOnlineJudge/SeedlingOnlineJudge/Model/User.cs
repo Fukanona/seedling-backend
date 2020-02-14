@@ -30,5 +30,14 @@ namespace SeedlingOnlineJudge.Model
         public string Company { get; set; }
 
         public override string GetPDataKey() => $"{Username}";
+
+        public void Copy(User otherUser)
+        {
+            Company = (string.IsNullOrEmpty(otherUser?.Company) ? Company : otherUser.Company);
+            Country = (string.IsNullOrEmpty(otherUser?.Country) ? Country : otherUser.Country);
+            Name = (string.IsNullOrEmpty(otherUser?.Name) ? Name : otherUser.Name);
+            Password = (string.IsNullOrEmpty(otherUser?.Password) ? Password : otherUser.Password);
+            State = (string.IsNullOrEmpty(otherUser?.State) ? State : otherUser.State);
+        }
     }
 }

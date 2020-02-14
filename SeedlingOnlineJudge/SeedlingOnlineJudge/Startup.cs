@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.DataProtection.AuthenticatedEncryption;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,6 +12,7 @@ using Microsoft.Extensions.Hosting;
 using SeedlingOnlineJudge.Database;
 using SeedlingOnlineJudge.Filters;
 using SeedlingOnlineJudge.Infrastructure.File;
+using SeedlingOnlineJudge.Util;
 
 namespace SeedlingOnlineJudge
 {
@@ -28,12 +31,16 @@ namespace SeedlingOnlineJudge
                 });
             });
 
+            services.AddDataProtection();
+
             services.AddControllers();
 
             services.AddSingleton<FileManager>();
             services.AddSingleton<ProblemsManager>();
             services.AddSingleton<UserManager>();
             services.AddSingleton<IDatabase>();
+
+            services.AddSingleton<Cipher>();
 
             services.AddScoped<UserFilter>();
         }
