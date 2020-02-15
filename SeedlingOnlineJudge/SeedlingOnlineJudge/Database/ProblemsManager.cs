@@ -1,4 +1,5 @@
 ﻿using SeedlingOnlineJudge.Model;
+using SeedlingOnlineJudge.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,6 +43,46 @@ namespace SeedlingOnlineJudge.Database
             Save(newProblem);
 
             return newProblem;
+        }
+
+        public ProblemDescription UpdateProblem(ProblemDescription problem, ProblemDescription updatedProblem)
+        {
+            problem.Copy(updatedProblem);
+            problem.LastUpdate = Helper.GetDateTimeNowBrazil();
+
+            Save<ProblemDescription>(problem);
+
+            return problem;
+        }
+
+        public Author GetProblemAuthor(string problemId)
+        {
+            var problem = Read<ProblemDescription>(problemId);
+            if (problem == null) return null;
+            return problem.Author;
+        }
+
+        public bool HasPermission(string problemId, User user)
+        {
+            var username = GetProblemAuthor(problemId).Username;
+            return (username?.Equals(user.Username) ?? false);
+        }
+
+        public void SetProblemActive(string problemId)
+        {
+            var problem = GetProblemById(problemId);
+            if (problem == null) return;
+            problem.Active = true;
+
+            Save<ProblemDescription>(problem);
+        }
+
+        public bool IsProblemActive(string problemId)
+        {
+            var problem = GetProblemById(problemId);
+            if (problem == null) return false;
+
+            return problem.Active.Value;
         }
     }
 }

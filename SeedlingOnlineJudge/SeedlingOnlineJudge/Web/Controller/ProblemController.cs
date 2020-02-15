@@ -36,6 +36,24 @@ namespace SeedlingOnlineJudge.Web.Controller
             return Ok(problem);
         }
 
+        [HttpPut]
+        [Route("problem/{problemId}")]
+        [ServiceFilter(typeof(UserFilter), IsReusable = true)]
+        public IActionResult UpdateProblemById(string problemId, ProblemDescription updatedProblem)
+        {
+            var user = this.GetUserFromContext();
+
+            var problem = _problemsManager.GetProblemById(problemId);
+            if (problem == null) return NotFound();
+
+            if (!problem.Author.Username.Equals(user.Username))
+                return BadRequest("You cannot modify this problem");
+
+            problem = _problemsManager.UpdateProblem(problem, updatedProblem);
+
+            return Ok(problem);
+        }
+
         [HttpPost]
         [Route("problem")]
         [ServiceFilter(typeof(AuthorFilter), IsReusable = true)]
@@ -56,21 +74,50 @@ namespace SeedlingOnlineJudge.Web.Controller
         }
 
         [HttpPost]
-        [Route("problemio")]
+        [Route("problem/io/{problemId}")]
         [ServiceFilter(typeof(UserFilter), IsReusable = true)]
-        public async Task<IActionResult> AddProblemInAndOutAsync(IFormFile inFile, IFormFile outFile)
+        public async Task<IActionResult> AddProblemIOAsync(string problemId, IFormFile inFile, IFormFile outFile)
         {
-            User user = this.GetUserFromContext();
+            if (!_problemsManager.HasPermission(problemId, this.GetUserFromContext()))
+                return StatusCode(StatusCodes.Status403Forbidden, "You cannot add IO for this problem");
 
-            var lastProblem = _problemsManager.GetAllProblems().Last();
-
-            var inLocation = await _fileManager.SaveAsync(inFile, $"{lastProblem.Id}.in", $"{FoldersPath.IOLocation}/{user.Username}").ConfigureAwait(false);
+            var inLocation = await _fileManager.SaveAsync(inFile, $"{FoldersPath.IOLocation}", $"{ problemId}.in").ConfigureAwait(false);
             if (inLocation == null)
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error trying to save IN file");
-            var outLocation = await _fileManager.SaveAsync(outFile, $"{lastProblem.Id}.out", $"{FoldersPath.IOLocation}/{user.Username}").ConfigureAwait(false);
+            var outLocation = await _fileManager.SaveAsync(outFile, $"{FoldersPath.IOLocation}", $"{problemId}.out").ConfigureAwait(false);
             if (outLocation == null)
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error trying to save OUT file");
 
+            _problemsManager.SetProblemActive(problemId);
+
+            return Ok();
+        }
+
+        [HttpPut]
+        [Route("problem/io/{problemId}")]
+        [ServiceFilter(typeof(UserFilter), IsReusable = true)]
+        public async Task<IActionResult> UpdateProblemIOAsync(string problemId, IFormFile inFile, IFormFile outFile)
+        {
+            if (!_problemsManager.HasPermission(problemId, this.GetUserFromContext()))
+                return StatusCode(StatusCodes.Status403Forbidden, "You cannot add IO for this problem");
+
+            if (!_problemsManager.IsProblemActive(problemId))
+                return StatusCode(StatusCodes.Status401Unauthorized, "O problema ainda nao tem IO");
+
+            if (inFile != null)
+            {
+                var inLocation = await _fileManager.SaveAsync(inFile, $"{FoldersPath.IOLocation}", $"{problemId}.in").ConfigureAwait(false);
+                if (inLocation == null)
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Error trying to save IN file");
+            }
+            
+            if(outFile != null)
+            {
+                var outLocation = await _fileManager.SaveAsync(outFile, $"{FoldersPath.IOLocation}", $"{problemId}.out").ConfigureAwait(false);
+                if (outLocation == null)
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Error trying to save OUT file");
+            }
+            
             return Ok();
         }
 
@@ -84,25 +131,6 @@ namespace SeedlingOnlineJudge.Web.Controller
 
             allProblemsId.Sort(new Helper.StrToIntAscComparator());
             return StatusCode(StatusCodes.Status200OK, allProblemsId);
-        }
-
-        [HttpPut]
-        [Route("problem/{problemId}")]
-        [ServiceFilter(typeof(UserFilter), IsReusable = true)]
-        public IActionResult UpdateProblemById(string problemId, ProblemDescription updatedProblem)
-        {
-            var user = this.GetUserFromContext();
-
-            var problem = _problemsManager.GetProblemById(problemId);
-            if (problem == null) return NotFound();
-
-            if (!problem.Author.Username.Equals(user.Username))
-                return BadRequest("You cannot modify this problem");
-
-            problem.Copy(updatedProblem);
-            problem.LastUpdate = Helper.GetDateTimeNowBrazil();
-
-            return Ok(problem);
         }
 
         [HttpGet]

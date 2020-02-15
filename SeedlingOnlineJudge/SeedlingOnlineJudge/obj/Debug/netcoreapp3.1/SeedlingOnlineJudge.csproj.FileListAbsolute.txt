@@ -99,3 +99,4 @@ C:\Seedling-Project\seedling-backend\SeedlingOnlineJudge\SeedlingOnlineJudge\obj
 C:\Seedling-Project\seedling-backend\SeedlingOnlineJudge\SeedlingOnlineJudge\obj\Debug\netcoreapp3.1\SeedlingOnlineJudge.csproj.CopyComplete
 C:\Seedling-Project\seedling-backend\SeedlingOnlineJudge\SeedlingOnlineJudge\obj\Debug\netcoreapp3.1\SeedlingOnlineJudge.dll
 C:\Seedling-Project\seedling-backend\SeedlingOnlineJudge\SeedlingOnlineJudge\obj\Debug\netcoreapp3.1\SeedlingOnlineJudge.pdb
+C:\Seedling-Project\seedling-backend\SeedlingOnlineJudge\SeedlingOnlineJudge\obj\Debug\netcoreapp3.1\SeedlingOnlineJudge.csprojAssemblyReference.cache

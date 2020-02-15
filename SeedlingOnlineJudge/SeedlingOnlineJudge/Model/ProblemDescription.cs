@@ -9,6 +9,18 @@ namespace SeedlingOnlineJudge.Model
 {
     public class ProblemDescription : PData<ProblemDescription>
     {
+        private bool? _active;
+
+        [JsonPropertyName("active")]
+        public bool? Active
+        {
+            get => _active ?? false;
+            set
+            {
+                _active = value;
+            }
+        }
+
         [JsonPropertyName("id")]
         public string Id { get; set; }
 
