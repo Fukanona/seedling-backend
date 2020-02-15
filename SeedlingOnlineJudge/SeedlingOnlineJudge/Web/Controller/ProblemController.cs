@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SeedlingOnlineJudge.Database;
-using SeedlingOnlineJudge.Filters;
+using SeedlingOnlineJudge.Web.Filters;
 using SeedlingOnlineJudge.Infrastructure.File;
 using SeedlingOnlineJudge.Model;
 using SeedlingOnlineJudge.Util;
@@ -40,16 +38,17 @@ namespace SeedlingOnlineJudge.Web.Controller
 
         [HttpPost]
         [Route("problem")]
-        [ServiceFilter(typeof(UserFilter), IsReusable = true)]
+        [ServiceFilter(typeof(AuthorFilter), IsReusable = true)]
         [ProducesResponseType(StatusCodes.Status201Created)]
         public IActionResult AddProblem(ProblemDescription newProblem)
         {
             if (newProblem == null)
                 return StatusCode(StatusCodes.Status400BadRequest, "You need to upload a problem!");
 
-            var user = this.GetUserFromContext();
+            var author = this.GetAuthorFromContext();
 
-            newProblem.Author = user;
+            newProblem.Author = author;
+            newProblem.LastUpdate = Helper.GetDateTimeNowBrazil();
 
             var response = _problemsManager.AddProblem(newProblem);
 
@@ -76,13 +75,45 @@ namespace SeedlingOnlineJudge.Web.Controller
         }
 
         [HttpGet]
-        [Route("problem")]
+        [Route("problem/all")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public IActionResult GetProblemsIds()
         {
             var allProblemsId = _problemsManager.GetAllProblemsIds();
+            if (allProblemsId == null) return StatusCode(StatusCodes.Status404NotFound);
+
             allProblemsId.Sort(new Helper.StrToIntAscComparator());
             return StatusCode(StatusCodes.Status200OK, allProblemsId);
+        }
+
+        [HttpPut]
+        [Route("problem/{problemId}")]
+        [ServiceFilter(typeof(UserFilter), IsReusable = true)]
+        public IActionResult UpdateProblemById(string problemId, ProblemDescription updatedProblem)
+        {
+            var user = this.GetUserFromContext();
+
+            var problem = _problemsManager.GetProblemById(problemId);
+            if (problem == null) return NotFound();
+
+            if (!problem.Author.Username.Equals(user.Username))
+                return BadRequest("You cannot modify this problem");
+
+            problem.Copy(updatedProblem);
+            problem.LastUpdate = Helper.GetDateTimeNowBrazil();
+
+            return Ok(problem);
+        }
+
+        [HttpGet]
+        [Route("problem")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public IActionResult GetProblems()
+        {
+            var allProblems = _problemsManager.GetAllProblems();
+            if (allProblems == null) return StatusCode(StatusCodes.Status404NotFound);
+
+            return StatusCode(StatusCodes.Status200OK, allProblems);
         }
     }
 }

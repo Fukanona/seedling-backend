@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SeedlingOnlineJudge.Database;
-using SeedlingOnlineJudge.Filters;
+using SeedlingOnlineJudge.Web.Filters;
 using SeedlingOnlineJudge.Infrastructure.File;
 using SeedlingOnlineJudge.Util;
 
@@ -35,14 +35,18 @@ namespace SeedlingOnlineJudge
 
             services.AddControllers();
 
+            // MANAGERS
             services.AddSingleton<FileManager>();
             services.AddSingleton<ProblemsManager>();
             services.AddSingleton<UserManager>();
             services.AddSingleton<IDatabase>();
 
+            // Util
             services.AddSingleton<Cipher>();
 
+            // Filters
             services.AddScoped<UserFilter>();
+            services.AddScoped<AuthorFilter>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

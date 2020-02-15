@@ -41,6 +41,30 @@ namespace SeedlingOnlineJudge.Web.Controller
             return Ok(user);
         }
 
+        [HttpGet]
+        [Route("user/login")]
+        public IActionResult ValidateUserLogin()
+        {
+            var request = this.HttpContext.Request;
+            request.Query.TryGetValue("username", out var username);
+            request.Query.TryGetValue("password", out var password);
+
+            var res = _userManager.ValidateUser(username.ToString(), password.ToString());
+            if (res == false) return NotFound();
+            return Ok();
+        }
+
+        [HttpGet]
+        [Route("user/password/{username}")]
+        public IActionResult RecoverPassword(string username)
+        {
+            var user = _userManager.GetUser(username);
+
+            user.Password = _userManager.DecryptPassword(user);
+
+            return Ok(user);
+        }
+
         [HttpPut]
         [Route("user/{username}")]
         public IActionResult UpdateUser(string username, User updatedUser)

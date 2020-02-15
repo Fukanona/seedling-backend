@@ -11,8 +11,8 @@ namespace Vtex.Commerce.Centauro.Web
         public static User GetUserFromContext(this ControllerBase controller)
             => (User)controller.HttpContext.Items[typeof(User)];
 
-        //[MethodImpl(MethodImplOptions.AggressiveInlining)]
-        //public static StoreConfiguration GetStoreConfigurationFromContext(this ControllerBase controller)
-        //    => (StoreConfiguration)controller.HttpContext.Items[nameof(StoreConfiguration)];
+        public static Author GetAuthorFromContext(this ControllerBase controller)
+            => (Author)controller.HttpContext.Items[typeof(Author)];
+
     }
 }

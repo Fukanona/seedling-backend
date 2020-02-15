@@ -41,6 +41,16 @@ namespace SeedlingOnlineJudge.Database
             return user;
         }
 
+        public bool ValidateUser(string username, string password)
+        {
+            var user = GetUser(username);
+            if (user == null) return false;
+            var decrypedPassword = _cipher.Decrypt(user.Password);
+            if (!decrypedPassword.Equals(password))
+                return false;
+            return true;
+        }
+
         public User UpdateUser(string username, User updatedUser)
         {
             if (string.IsNullOrWhiteSpace(username))
@@ -65,6 +75,15 @@ namespace SeedlingOnlineJudge.Database
                 return;
             var encryptedPass = _cipher.Encrypt(user.Password);
             user.Password = encryptedPass;
+        }
+
+        public string DecryptPassword(User user)
+        {
+            if (string.IsNullOrWhiteSpace(user.Password))
+                return "";
+            var decryptedPass = _cipher.Decrypt(user.Password);
+
+            return decryptedPass;
         }
 
         public User UserExist(string username)

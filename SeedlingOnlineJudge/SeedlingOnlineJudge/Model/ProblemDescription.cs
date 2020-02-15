@@ -12,6 +12,9 @@ namespace SeedlingOnlineJudge.Model
         [JsonPropertyName("id")]
         public string Id { get; set; }
 
+        [JsonPropertyName("lastUpdate")]
+        public DateTime LastUpdate { get; set; }
+
         [JsonPropertyName("name")]
         public string Name { get; set; }
 
@@ -19,7 +22,7 @@ namespace SeedlingOnlineJudge.Model
         public string Description { get; set; }
 
         [JsonPropertyName("author")]
-        public User Author { get; set; }
+        public Author Author { get; set; }
 
         [JsonPropertyName("competition")]
         public string Competition { get; set; }
@@ -31,7 +34,16 @@ namespace SeedlingOnlineJudge.Model
         public string Level { get; set; }
 
         public override string GetPDataKey() => $"{Id}";
-        
+
+        public void Copy(ProblemDescription otherProblem)
+        {
+            Name = (string.IsNullOrEmpty(otherProblem?.Name) ? Name : otherProblem.Name);
+            Description = (string.IsNullOrEmpty(otherProblem?.Description) ? Description : otherProblem.Description);
+            Competition = (string.IsNullOrEmpty(otherProblem?.Competition) ? Competition : otherProblem.Competition);
+            Categories = (otherProblem?.Categories == null) ? Categories : otherProblem.Categories;
+            Level = (string.IsNullOrEmpty(otherProblem?.Level) ? Level : otherProblem.Level);
+        }
+
     }
 
     public enum ProblemLevel

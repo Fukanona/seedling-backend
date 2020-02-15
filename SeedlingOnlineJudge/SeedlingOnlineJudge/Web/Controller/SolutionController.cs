@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using SeedlingOnlineJudge.Filters;
+using SeedlingOnlineJudge.Web.Filters;
 using SeedlingOnlineJudge.Infrastructure.File;
 using SeedlingOnlineJudge.Model;
 using SeedlingOnlineJudge.Util;

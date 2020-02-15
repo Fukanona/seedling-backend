@@ -50,7 +50,7 @@ namespace SeedlingOnlineJudge.Database
 
         public List<T> ReadAll<T>(string basePath = "") where T : PData<T>
         {
-            basePath = $"{PData<T>.Folder}/{basePath}"; 
+            basePath = $"{FoldersPath.Base}/{PData<T>.Folder}/{basePath}"; 
             List<T> datas = new List<T>();
             string[] allFiles;
             try
