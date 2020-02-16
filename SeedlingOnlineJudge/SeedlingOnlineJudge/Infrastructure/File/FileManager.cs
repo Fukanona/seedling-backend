@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace SeedlingOnlineJudge.Infrastructure.File
@@ -28,6 +29,16 @@ namespace SeedlingOnlineJudge.Infrastructure.File
                 return filePath;
             }
             return null;
+        }
+
+        public string Read(string path)
+        {
+            using (StreamReader streamReader = new StreamReader(path, Encoding.ASCII, true))
+            {
+                string text = streamReader.ReadToEnd();
+
+                return text;
+            }
         }
     }
 }

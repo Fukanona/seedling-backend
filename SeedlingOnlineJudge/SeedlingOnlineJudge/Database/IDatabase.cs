@@ -16,11 +16,11 @@ namespace SeedlingOnlineJudge.Database
         }
         public void Save<T>(T data) where T : PData<T>
         {
-            var path = $"{FoldersPath.Base}/{PData<T>.Folder}";
+            var path = @$"{FoldersPath.Base}\{PData<T>.Folder}";
 
             Helper.CreateFolderIfNecessary(path);
 
-            var file = path + $"/{data.GetPDataKey()}.json";
+            var file = path + @$"\{data.GetPDataKey()}.json";
 
             File.WriteAllText(file, JsonSerializer.Serialize(data), System.Text.Encoding.UTF8);
         }
@@ -35,7 +35,7 @@ namespace SeedlingOnlineJudge.Database
         {
             string file = key;
             if(prefix)
-                file = $"{FoldersPath.Base}/{PData<T>.Folder}/{key}.json";
+                file = @$"{FoldersPath.Base}\{PData<T>.Folder}\{key}.json";
             T data;
             try
             {
@@ -50,7 +50,7 @@ namespace SeedlingOnlineJudge.Database
 
         public List<T> ReadAll<T>(string basePath = "") where T : PData<T>
         {
-            basePath = $"{FoldersPath.Base}/{PData<T>.Folder}/{basePath}"; 
+            basePath = @$"{FoldersPath.Base}\{PData<T>.Folder}\{basePath}"; 
             List<T> datas = new List<T>();
             string[] allFiles;
             try

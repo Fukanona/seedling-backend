@@ -9,6 +9,7 @@ using SeedlingOnlineJudge.Infrastructure.File;
 using SeedlingOnlineJudge.Model;
 using SeedlingOnlineJudge.Util;
 using Vtex.Commerce.Centauro.Web;
+using SeedlingOnlineJudge.BO;
 
 namespace SeedlingOnlineJudge.Web.Controller
 {
@@ -17,19 +18,22 @@ namespace SeedlingOnlineJudge.Web.Controller
     public class SolutionController : ControllerBase
     {
         private readonly FileManager _fileManager;
-        public SolutionController(FileManager fileManager)
+        private readonly SolutionBO _solutionBo;
+        public SolutionController(FileManager fileManager, SolutionBO solutionBo)
         {
             _fileManager = fileManager;
+            _solutionBo = solutionBo;
         }
 
         [HttpPost]
         [Route("solution")]
-        [ServiceFilter(typeof(UserFilter), IsReusable = true)]
+        [ServiceFilter(typeof(UserFilter), IsReusable = true),]
         public async Task<IActionResult> UploadSolutionAsync(IFormFile solution, string problemId)
         {
             User user = this.GetUserFromContext();
-            await _fileManager.SaveAsync(solution, $"{problemId}.cpp", $"{FoldersPath.SolutionLocation}/{user.Username}").ConfigureAwait(false);
-            return Ok();
+            await _fileManager.SaveAsync(solution, @$"{FoldersPath.SolutionLocation}\{user.Username}", $"{problemId}.cpp").ConfigureAwait(false);
+
+            return Ok(_solutionBo.RunUserSolution(user, problemId));
         }
     }
 }

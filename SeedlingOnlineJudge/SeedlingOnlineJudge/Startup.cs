@@ -13,6 +13,7 @@ using SeedlingOnlineJudge.Database;
 using SeedlingOnlineJudge.Web.Filters;
 using SeedlingOnlineJudge.Infrastructure.File;
 using SeedlingOnlineJudge.Util;
+using SeedlingOnlineJudge.BO;
 
 namespace SeedlingOnlineJudge
 {
@@ -40,6 +41,9 @@ namespace SeedlingOnlineJudge
             services.AddSingleton<ProblemsManager>();
             services.AddSingleton<UserManager>();
             services.AddSingleton<IDatabase>();
+
+            // BO
+            services.AddSingleton<SolutionBO>();
 
             // Util
             services.AddSingleton<Cipher>();
