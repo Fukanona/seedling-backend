@@ -44,6 +44,7 @@ namespace SeedlingOnlineJudge
 
             // BO
             services.AddSingleton<SolutionBO>();
+            services.AddSingleton<ContractBO>();
 
             // Util
             services.AddSingleton<Cipher>();

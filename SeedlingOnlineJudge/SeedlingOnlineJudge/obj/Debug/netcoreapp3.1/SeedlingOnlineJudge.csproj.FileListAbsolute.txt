@@ -90,6 +90,7 @@ C:\Seedling-Project\seedling-backend\SeedlingOnlineJudge\SeedlingOnlineJudge\bin
 C:\Seedling-Project\seedling-backend\SeedlingOnlineJudge\SeedlingOnlineJudge\bin\Debug\netcoreapp3.1\tr\Microsoft.CodeAnalysis.Workspaces.resources.dll
 C:\Seedling-Project\seedling-backend\SeedlingOnlineJudge\SeedlingOnlineJudge\bin\Debug\netcoreapp3.1\zh-Hans\Microsoft.CodeAnalysis.Workspaces.resources.dll
 C:\Seedling-Project\seedling-backend\SeedlingOnlineJudge\SeedlingOnlineJudge\bin\Debug\netcoreapp3.1\zh-Hant\Microsoft.CodeAnalysis.Workspaces.resources.dll
+C:\Seedling-Project\seedling-backend\SeedlingOnlineJudge\SeedlingOnlineJudge\obj\Debug\netcoreapp3.1\SeedlingOnlineJudge.csprojAssemblyReference.cache
 C:\Seedling-Project\seedling-backend\SeedlingOnlineJudge\SeedlingOnlineJudge\obj\Debug\netcoreapp3.1\staticwebassets\SeedlingOnlineJudge.StaticWebAssets.Manifest.cache
 C:\Seedling-Project\seedling-backend\SeedlingOnlineJudge\SeedlingOnlineJudge\obj\Debug\netcoreapp3.1\staticwebassets\SeedlingOnlineJudge.StaticWebAssets.xml
 C:\Seedling-Project\seedling-backend\SeedlingOnlineJudge\SeedlingOnlineJudge\obj\Debug\netcoreapp3.1\SeedlingOnlineJudge.MvcApplicationPartsAssemblyInfo.cache
