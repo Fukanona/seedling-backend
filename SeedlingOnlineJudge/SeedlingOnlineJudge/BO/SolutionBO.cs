@@ -13,6 +13,7 @@ namespace SeedlingOnlineJudge.BO
     public class SolutionBO
     {
         private readonly FileManager _fileManager;
+
         public SolutionBO(FileManager fileManager)
         {
             _fileManager = fileManager;
@@ -20,32 +21,38 @@ namespace SeedlingOnlineJudge.BO
 
         public void CompileFile(User user, string problemId)
         {
-            var pathToSolution = @$"{FoldersPath.SolutionLocation}\{user.Username}";
-            var completePathToSolution = @$"{pathToSolution}\{problemId}.cpp";
-            CmdManager.RunCommand(@$"g++ {completePathToSolution} -o {pathToSolution}\a.exe -std=c++11");
+            var pathToSolution = PathManager.GetPath(FoldersPath.SolutionLocation, user.Username);
+            var completePathToSolution = PathManager.GetPath(pathToSolution, $"{problemId}.cpp");
+            var outPath = PathManager.GetPath(pathToSolution, "a.exe");
+            CmdManager.RunCommand($"g++ {completePathToSolution} -o {outPath} -std=c++11");
         }
 
         public void CreateUserOutput(User user, string problemId)
         {
-            var completePathToIn = @$"{FoldersPath.IOLocation}\{problemId}.in";
+            var completePathToIn = PathManager.GetPath(FoldersPath.IOLocation, $"{problemId}.in");
 
-            var pathToSolution = @$"{FoldersPath.SolutionLocation}\{user.Username}";
+            var pathToSolution = PathManager.GetPath(FoldersPath.SolutionLocation, user.Username);
 
-            CmdManager.RunCommand(@$"{pathToSolution}\a.exe < {completePathToIn} > {pathToSolution}\userout-{problemId}.txt");
+            var useroutPath = PathManager.GetPath(pathToSolution, $"userout-{problemId}.txt");
+
+            CmdManager.RunCommand(@$"{pathToSolution}\a.exe < {completePathToIn} > {useroutPath}");
         }
 
         public void CreateResult(User user, string problemId)
         {
-            var completePathToOut = @$"{FoldersPath.IOLocation}\{problemId}.out";
+            var completePathToOut = PathManager.GetPath(FoldersPath.IOLocation, $"{problemId}.out");
 
-            var pathToSolution = $@"{FoldersPath.SolutionLocation}\{user.Username}";
+            var pathToSolution = PathManager.GetPath(FoldersPath.SolutionLocation, user.Username);
 
-            CmdManager.RunCommand(@$"fc {completePathToOut} {pathToSolution}\userout-{problemId}.txt > {pathToSolution}\res-{problemId}.txt");
+            var useroutPath = PathManager.GetPath(pathToSolution, $"userout-{problemId}.txt");
+            var resPath = PathManager.GetPath(pathToSolution, $"res-{problemId}.txt");
+
+            CmdManager.RunCommand(@$"fc {completePathToOut} {useroutPath} > {resPath}");
         }
 
         public bool ValidateSolution(User user, string problemId)
         {
-            var pathToRes= @$"{FoldersPath.SolutionLocation}\{user.Username}\res-{problemId}.txt";
+            var pathToRes = PathManager.GetPath(FoldersPath.SolutionLocation, user.Username, $"res-{problemId}.txt");
             var res = _fileManager.Read(pathToRes);
             if (res.Contains("FC: no differences encountered")) return true;
             return false;
@@ -53,10 +60,14 @@ namespace SeedlingOnlineJudge.BO
 
         public void CleanAll(User user, string problemId)
         {
-            var pathToSolution = $@"{FoldersPath.SolutionLocation}\{user.Username}";
-            CmdManager.RunCommand($@"del {pathToSolution}\a.exe");
-            CmdManager.RunCommand($@"del {pathToSolution}\userout-{problemId}.txt");
-            CmdManager.RunCommand($@"del {pathToSolution}\res-{problemId}.txt");
+            var pathToSolution = PathManager.GetPath(FoldersPath.SolutionLocation, user.Username);
+            var useroutPath = PathManager.GetPath(pathToSolution, $"userout-{problemId}.txt");
+            var resPath = PathManager.GetPath(pathToSolution, $"res-{problemId}.txt");
+            var outPath = PathManager.GetPath(pathToSolution, "a.exe");
+
+            CmdManager.RunCommand($"del {outPath}");
+            CmdManager.RunCommand($"del {useroutPath}");
+            CmdManager.RunCommand($"del {resPath}");
         }
 
         public bool RunUserSolution(User user, string problemId)

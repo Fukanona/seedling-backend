@@ -31,7 +31,7 @@ namespace SeedlingOnlineJudge.Web.Controller
         public async Task<IActionResult> UploadSolutionAsync(IFormFile solution, string problemId)
         {
             User user = this.GetUserFromContext();
-            await _fileManager.SaveAsync(solution, @$"{FoldersPath.SolutionLocation}\{user.Username}", $"{problemId}.cpp").ConfigureAwait(false);
+            await _fileManager.SaveAsync(solution, PathManager.GetPath(FoldersPath.SolutionLocation, user.Username), $"{problemId}.cpp").ConfigureAwait(false);
 
             return Ok(_solutionBo.RunUserSolution(user, problemId));
         }
